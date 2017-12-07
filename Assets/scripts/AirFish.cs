@@ -1,0 +1,34 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AirFish : MonoBehaviour {
+	public bool forwardAtBeginning = true;
+	public float speed = .3f;
+	
+	private Vector3 _direction;
+
+	// Use this for initialization
+	void Start () {
+		_direction = forwardAtBeginning ? Vector3.left : Vector3.right;
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		transform.Translate(_direction * speed * Time.deltaTime);
+	}
+
+	void OnCollisionEnter(Collision collision) {
+		foreach (ContactPoint contact in collision.contacts)
+        {
+            Debug.DrawRay(contact.point, contact.normal, Color.white);
+        }
+	}
+
+	void OnTriggerEnter(Collider collider) {
+		//TODO 如果碰上的是建筑，才触发，当然碰到不同的东西，出发的结果不一样
+		if(true) {
+			_direction = -_direction;
+		}
+	}
+}
