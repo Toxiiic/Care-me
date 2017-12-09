@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +7,10 @@ public class Button : MonoBehaviour {
 	public bool AutoUp = false;
 	public float moveDuration = .2f;
 
+	public event EventHandler<ButtonEventArgs> buttonChange;
+
 	/* 按钮状态，默认关 */
 	private bool _status = false;
-	/* Machine是Button的listener */
-	private List<ButtonListener> _listenerList = new List<ButtonListener>();
-	
 	private bool _startGoingDown = false;
 	private float _startTime;
 	private float _fromY;
@@ -54,12 +54,12 @@ public class Button : MonoBehaviour {
 
 	/* 触发监听器 */
 	private void _triggerListeners() {
-		foreach(ButtonListener listener in _listenerList) {
-			listener.onButtonChange(_status);
+		if(buttonChange != null) {
+			buttonChange(this, new ButtonEventArgs(true));
 		}
 	}
 
-	public void addButtonListener(ButtonListener listener) {
-		_listenerList.Add(listener);
-	}
+	// public void addButtonListener(ButtonListener listener) {
+	// 	_listenerList.Add(listener);
+	// }
 }
