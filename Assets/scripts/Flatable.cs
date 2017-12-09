@@ -20,7 +20,7 @@ public class Flatable : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody>();
-		Debug.Log("fsdafsfsdf"+rb);
+		// Debug.Log("fsdafsfsdf"+rb);
 	}
 	
 	// Update is called once per frame
@@ -46,7 +46,7 @@ public class Flatable : MonoBehaviour {
 		参数为是否是向前
 	*/
 	public void endDown (bool isForward) {
-		Debug.Log("up~~");
+		// Debug.Log("up~~");
 
 		Vector3 horiVector = isForward ? Vector3.right : Vector3.left;
 		rb.isKinematic = false;
