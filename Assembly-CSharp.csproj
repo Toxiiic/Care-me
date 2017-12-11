@@ -65,6 +65,7 @@
      <Compile Include="Assets\scripts\LazerBase.cs" />
      <Compile Include="Assets\scripts\Machine.cs" />
      <Compile Include="Assets\scripts\Protagnist.cs" />
+     <Compile Include="Assets\scripts\RevivePoint.cs" />
      <Compile Include="Assets\scripts\SceneController.cs" />
      <Compile Include="Assets\scripts\SmoothCamera.cs" />
  <Reference Include="UnityEngine.UI">

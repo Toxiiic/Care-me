@@ -11,6 +11,10 @@ using UnityEngine;
 	1.可toggle		toggle真				指定
 	2.自动跳起		toggle假且autoUp真		false
 	3.起不来一次性	toggle假且autoUp假		false
+
+	按钮刚开始摆放的位置，一定是up的，与初始状态无关，初始状态由代码来改变
+
+	TODO 需要写两个瞬间变化按钮状态（不带动画）的方法，用于初始化按钮状态
  */
 public class Button : MonoBehaviour {
 	public float moveDuration = .2f;
@@ -19,58 +23,57 @@ public class Button : MonoBehaviour {
 	//是否会自动弹起
 	public bool autoUp = false;
 	//初始状态
-	public bool initStatus = false;
+	public bool initStatusDown = false;
+
+	// public float speed = .1f;
+	public float zOffset = .025f;
 
 
 	public event EventHandler<ButtonEventArgs> buttonChange;
 
-	/* 按钮状态，默认关 */
+	/* 按钮状态 */
 	private bool _status;
 	private float _startTime;
-	private Vector3 _newPos;
 
-	private float _fromY;
-	private float _targetY;
-	private float _bottomY = .2f;
-	private float _upY = .175f;
+	private Vector3 _fromPos;
+	private Vector3 _targetPos;
+	private Vector3 _bottomPos;
+	private Vector3 _upPos;
 	private bool _isGoing = false;
 	private bool _isGoingDown = true;
 
 
+
 	// Use this for initialization
 	void Start () {
-		_fromY = transform.position.y;
-		_newPos = transform.position;
-		startGo(initStatus);
+		//初始放置位置就是按钮的up位置
+		_upPos = transform.position;
+		//bottom位置很重要，要根据当前位置和方向计算得出
+		// forwardInWorld = transform.TransformVector(Vector3.forward);
+		_bottomPos = transform.position - transform.forward * zOffset;
+		
+		startGo(initStatusDown);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(_isGoing) {
-			float newY;
 			float linearProportion = (Time.time - _startTime) / moveDuration;
+			transform.position = Vector3.Lerp(_fromPos, _targetPos, linearProportion);
 			
-			newY = Mathf.SmoothStep(_fromY, _targetY, linearProportion);
-
-			if(newY != _targetY) {
-			/* 下降没结束 */
-				_newPos.y = newY;
-				transform.position = _newPos;
-			} else {
-			/* 下降结束 */
+			/* 下降结束 */ 
+			if(transform.position.Equals(_targetPos)) {
 				_isGoing = false;
 				_triggerListeners();
 				_status = _isGoingDown;
 			}
-		
 		}
-
 	}
 
 	//当被碰到
 	void OnTriggerEnter() {
 		if(_isGoing) return;
-		Debug.Log("enter");
+		// Debug.Log("enter");
 		if(toggleSwitch) {
 			/* 1.toggle */
 			//只要碰，就切换
@@ -88,12 +91,11 @@ public class Button : MonoBehaviour {
 				}
 			}
 		}
-		
 	}
 
 	void OnTriggerExit(Collider collisionInfo) {
 		if(_isGoing) return;
-		Debug.Log("exit");
+		// Debug.Log("exit");
 		if(!toggleSwitch) {
 			if(autoUp) {
 				/* 2.autoUp */
@@ -116,11 +118,11 @@ public class Button : MonoBehaviour {
 		_startTime = Time.time;
 
 		if(goingDown) {
-			_fromY = _upY;
-			_targetY = _bottomY;
+			_fromPos = _upPos;
+			_targetPos = _bottomPos;
 		} else {
-			_fromY = _bottomY;
-			_targetY = _upY;
+			_fromPos = _bottomPos;
+			_targetPos = _upPos;
 		}
 	}
 
