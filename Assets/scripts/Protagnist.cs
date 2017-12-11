@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Protagnist : MonoBehaviour {
-	//relive point
-	public Vector3 relivePoint {set; get;}
+	public float reviveVerticalOffset = .5f;
+
+	//最新经过的复活点【最新复活点】
+	private Vector3 _latestRevivePoint;
 
 	// Use this for initialization
 	void Start () {
-		
+		//找到最左侧的revivePoint，作为最新复活点
+		_latestRevivePoint = _findFirstRevivePoint();
 	}
 	
 	// Update is called once per frame
@@ -19,7 +22,28 @@ public class Protagnist : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if(other.CompareTag("deadly")) {
 			Debug.Log("dead!");
-			transform.position = new Vector3(0, 0.2f, 0);
+			transform.position = _latestRevivePoint;
 		}
+
+		if(other.CompareTag("revivePoint")) {
+			//当这个复活点比最新复活点靠右时，让他成为最新复活点，否则不做
+			if(other.transform.position.x > _latestRevivePoint.x) {
+				_latestRevivePoint = other.transform.position + Vector3.up * reviveVerticalOffset;
+				//TODO 复活点动画
+			}
+		}
+	}
+
+	private Vector3 _findFirstRevivePoint() {
+		GameObject[] revivePointGOs = GameObject.FindGameObjectsWithTag("revivePoint");
+		
+		Vector3 mostLeftVector = Vector3.right * 10000;
+		foreach(GameObject iGO in revivePointGOs) {
+			if(iGO.transform.position.x < mostLeftVector.x) {
+				mostLeftVector = iGO.transform.position;
+			}
+		}
+		Debug.Log(mostLeftVector);
+		return mostLeftVector;
 	}
 }

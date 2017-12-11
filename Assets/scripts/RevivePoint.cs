@@ -13,4 +13,10 @@ public class RevivePoint : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	void OnTriggerEnter(Collider other)	{
+		if(other.gameObject == GameInitializer.axiceGO) {
+			
+		}
+	}
 }
