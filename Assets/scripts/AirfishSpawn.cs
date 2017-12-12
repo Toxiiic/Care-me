@@ -20,6 +20,7 @@ public class AirfishSpawn : MonoBehaviour {
 	// private bool _charged = false;
 	private float _lastChargedTime = 0;
 	private bool _lastDied = true;
+	private List<Airfish> _airfishChildren = new List<Airfish>();
 
 	// Use this for initialization
 	void Start () {
@@ -48,9 +49,15 @@ public class AirfishSpawn : MonoBehaviour {
 	}
 
 	private void _emit() {
+		//在一定角度、位置生成
 		Quaternion rotation = transform.rotation;
 		rotation.eulerAngles = new Vector3(-90, 0, 0);
-		Object.Instantiate(airfishGO, transform.position + Vector3.up*upOffset, rotation);
+		Airfish airfish = Object.Instantiate(airfishGO, transform.position + Vector3.up*upOffset, rotation).GetComponent<Airfish>();
+		//设置速度
+		airfish.speed = airfishSpeed;
+		//加入集合
+		_airfishChildren.Add(airfish);
+		//维护生成器
 		_lastDied = false;
 		_lastChargedTime = Time.time;
 	}

@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Line\scr\XLine.cs" />
-     <Compile Include="Assets\scripts\AirFish.cs" />
+     <Compile Include="Assets\scripts\Airfish.cs" />
      <Compile Include="Assets\scripts\AirfishSpawn.cs" />
      <Compile Include="Assets\scripts\Button.cs" />
      <Compile Include="Assets\scripts\ButtonEventArgs.cs" />

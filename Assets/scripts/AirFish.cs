@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AirFish : MonoBehaviour {
-	public bool forwardAtBeginning = true;
+public class Airfish : MonoBehaviour {
+	// public bool forwardAtBeginning = true;
 	public float speed = .3f;
 	
-	private Vector3 _direction;
+	private Vector3 _direction = Vector3.right;
 
 	// Use this for initialization
 	void Start () {
-		_direction = forwardAtBeginning ? Vector3.left : Vector3.right;
+		// _direction = forwardAtBeginning ? Vector3.right : Vector3.left;
 	}
 	
 	// Update is called once per frame

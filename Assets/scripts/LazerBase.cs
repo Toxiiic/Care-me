@@ -9,8 +9,6 @@ public class LazerBase : MonoBehaviour {
 	public bool iniStatusOn = false;
 	//如果连接到按钮，就跟下面的状态无关，而是听按钮的话
 	public Button controlButton = null;
-	//如果不链接到按钮，就保持这个状态
-	// public bool staticStatus = true;
 
 	private bool _status = false;
 	private GameObject _lazerGO;
@@ -43,17 +41,10 @@ public class LazerBase : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(_status) {
-			Debug.DrawRay(transform.position, transform.forward);
 			RaycastHit hit;
-			/* 射到了 */
 			if(Physics.Raycast(transform.position, transform.forward, out hit, 30, _raycastLayerMask)) {
-				// if(hit.transform.tag == Tags.mortal) {
-				/* 射到的是mortal */
-					// _lazerScale.z = 30;
-				// } else {
-				/* 射到的不是mortal */
+			/* 射到了 */
 				_lazerScale.z = hit.distance;
-				// }
 			} else {
 			/* 啥都没射到 */
 				_lazerScale.z = 30;
