@@ -21,16 +21,20 @@ public class Protagnist : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if(other.CompareTag("deadly")) {
-			Debug.Log("dead!");
-			transform.position = _latestRevivePoint;
+			_die();
 		}
-
 		if(other.CompareTag("revivePoint")) {
 			//当这个复活点比最新复活点靠右时，让他成为最新复活点，否则不做
 			if(other.transform.position.x > _latestRevivePoint.x) {
 				_latestRevivePoint = other.transform.position + Vector3.up * reviveVerticalOffset;
 				//TODO 复活点动画
 			}
+		}
+	}
+
+	void OnCollisionEnter(Collision collisionInfo) {
+		if(collisionInfo.gameObject.CompareTag("deadly")) {
+			_die();
 		}
 	}
 
@@ -45,5 +49,10 @@ public class Protagnist : MonoBehaviour {
 		}
 		Debug.Log(mostLeftVector);
 		return mostLeftVector;
+	}
+
+	private void _die() {
+		Debug.Log("dead!");
+		transform.position = _latestRevivePoint;
 	}
 }

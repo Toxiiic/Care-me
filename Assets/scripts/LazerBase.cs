@@ -16,6 +16,7 @@ public class LazerBase : MonoBehaviour {
 	private GameObject _lazerGO;
 	//要保证它的长度正好是1个单位（粗细不用是1个单位）,且那个方向的scale也是1
 	private Vector3 _lazerScale;
+	private int _raycastLayerMask;
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +24,7 @@ public class LazerBase : MonoBehaviour {
 		_lazerGO = Instantiate(lazerGO);
 		_lazerScale = _lazerGO.transform.localScale;
 		_lazerGO.transform.position = this.transform.position;
+		_raycastLayerMask = LayerMask.GetMask("Default");
 		
 		//初始状态
 		if(iniStatusOn) {
@@ -34,6 +36,8 @@ public class LazerBase : MonoBehaviour {
 		if(controlButton != null) {
 			controlButton.buttonChange += onButtonChange;
 		}
+
+		Debug.Log("fsdf "+LayerMask.GetMask("Default"));
 	}
 	
 	// Update is called once per frame
@@ -41,10 +45,17 @@ public class LazerBase : MonoBehaviour {
 		if(_status) {
 			Debug.DrawRay(transform.position, transform.forward);
 			RaycastHit hit;
-			//射到了
-			if(Physics.Raycast(transform.position, transform.forward, out hit)) {
+			/* 射到了 */
+			if(Physics.Raycast(transform.position, transform.forward, out hit, 30, _raycastLayerMask)) {
+				// if(hit.transform.tag == Tags.mortal) {
+				/* 射到的是mortal */
+					// _lazerScale.z = 30;
+				// } else {
+				/* 射到的不是mortal */
 				_lazerScale.z = hit.distance;
-			} else { //没射到
+				// }
+			} else {
+			/* 啥都没射到 */
 				_lazerScale.z = 30;
 			}
 			_lazerGO.transform.localScale = _lazerScale;
