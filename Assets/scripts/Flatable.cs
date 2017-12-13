@@ -51,6 +51,7 @@ public class Flatable : MonoBehaviour {
 		Vector3 horiVector = isForward ? Vector3.right : Vector3.left;
 		rb.isKinematic = false;
 		rb.AddForce((Vector3.up + horiVector*horiScale) * thrust * durationNow, ForceMode.Impulse);
+		Debug.Log(" fdsfds "+((Vector3.up + horiVector*horiScale) * thrust * durationNow).y);
 
 		flatableTf.localScale = Vector3.one;
 	}

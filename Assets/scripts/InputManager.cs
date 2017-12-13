@@ -21,18 +21,41 @@ public class InputManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButtonDown("Forward") || Input.GetButtonDown("Backward")) {
-			axiceFlatable.beginDown();
-		}
-		if(Input.GetButton("Forward") || Input.GetButton("Backward")) {
-			axiceFlatable.downing();
-		}
-		if(Input.GetButtonUp("Forward") || Input.GetButtonUp("Backward")) {
+		
+
+		if(Input.touchCount > 0) {
+			Touch touch = Input.GetTouch(0);
+			switch(touch.phase) {
+				case TouchPhase.Began:
+					axiceFlatable.beginDown();
+					break;
+				case TouchPhase.Moved:
+				case TouchPhase.Stationary:
+					axiceFlatable.downing();
+					break;
+				case TouchPhase.Ended:
+					bool isForward = touch.position.x > Screen.width/2;
+					axiceFlatable.endDown(isForward);
+					Debug.Log("touch up");
+					break;
+			}
+		} else {
+			if(Input.GetButtonDown("Forward") || Input.GetButtonDown("Backward")) {
+				axiceFlatable.beginDown();
+			}
+			if(Input.GetButton("Forward") || Input.GetButton("Backward")) {
+				axiceFlatable.downing();
+			}
 			if(Input.GetButtonUp("Forward")) {
 				axiceFlatable.endDown(true);
-			} else {
+				Debug.Log("button Forward");
+			} else if(Input.GetButtonUp("Backward")) {
 				axiceFlatable.endDown(false);
+				Debug.Log("button Backward");
 			}
 		}
+
 	}
+
+
 }

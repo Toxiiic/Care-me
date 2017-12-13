@@ -19,9 +19,11 @@ public class LazerBase : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		/* 需要初始化的变量-否则根本不对 */
-		_lazerGO = Instantiate(lazerGO);
+		_lazerGO = Instantiate(lazerGO, transform);
 		_lazerScale = _lazerGO.transform.localScale;
-		_lazerGO.transform.position = this.transform.position;
+		// _lazerGO.transform.position = this.transform.position;
+		_lazerGO.transform.localPosition = Vector3.zero;
+		_lazerGO.transform.localRotation = Quaternion.identity;
 		_raycastLayerMask = LayerMask.GetMask("Default");
 		
 		//初始状态
@@ -40,11 +42,13 @@ public class LazerBase : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.DrawRay(transform.position, transform.forward);
 		if(_status) {
 			RaycastHit hit;
 			if(Physics.Raycast(transform.position, transform.forward, out hit, 30, _raycastLayerMask)) {
 			/* 射到了 */
 				_lazerScale.z = hit.distance;
+				// Debug.Log("fsaf "+_lazerScale+" "+transform.gameObject.name+""+hit.transform.gameObject.name);
 			} else {
 			/* 啥都没射到 */
 				_lazerScale.z = 30;
