@@ -169,7 +169,7 @@
 'Assets/scripts/Protagnist.cs'
 'Assets/scripts/SceneController.cs'
 'Assets/scripts/SmoothCamera.cs'
-'Assets/scripts/SmoothTarget.cs'
+'Assets/scripts/SmoothRotatableTarget.cs'
 'Assets/scripts/Tags.cs'
 -r:'/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
 -r:'/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/System.Xml.Linq.dll'

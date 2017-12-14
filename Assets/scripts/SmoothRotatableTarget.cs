@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* 因其特性为smooth rotatable offset，简写为SRO */
 public class SmoothRotatableTarget : MonoBehaviour {
 	public Transform target;
     public float smoothTime = 0.3F;
@@ -21,5 +22,17 @@ public class SmoothRotatableTarget : MonoBehaviour {
         float newPositionY = Mathf.SmoothStep(transform.position.y, target.position.y, smoothTime);
 		smoothTargetPos = new Vector3(newPositionX, newPositionY, 0);
         transform.position = smoothTargetPos + offset;
+	}
+
+	public void beginRotating() {
+
+	}
+	public void rotating(Vector2 deltaPosition) {
+		transform.Rotate(0, deltaPosition.x, deltaPosition.y);
+		
+		Debug.Log(deltaPosition.x +" "+ deltaPosition.y+" "+this.name+" "+this.transform.parent.name+" "+transform.localPosition);
+	}
+	public void endRotating() {
+		
 	}
 }
